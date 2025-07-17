@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Recipe } from '@/app/lib/recipes';
+import { Recipe } from '@/types/recipe';
 
 export default function RecipesList() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

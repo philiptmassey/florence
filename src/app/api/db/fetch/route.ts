@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
-import { Recipe } from '@/app/lib/recipes';
+import { Recipe } from '@/types/recipe';
 
 export async function GET() {
   const client = await clientPromise;

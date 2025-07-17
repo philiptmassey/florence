@@ -1,17 +1,25 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/app/lib/mongodb';
-import { Recipe } from '@/app/lib/recipes';
+import { Recipe } from '@/types/recipe';
 
 const defaultRecipes: Recipe[] = [
   {
     title: 'Pasta Primavera',
+    imageUrl: 'https://example.com/images/pasta.jpg',
     ingredients: ['pasta', 'zucchini', 'tomatoes', 'garlic'],
     steps: ['Boil pasta', 'Sauté veggies', 'Combine and serve'],
+    dateAdded: new Date(),
+    category: 'Meal',
+    servings: 2,
   },
   {
     title: 'PB&J Sandwich',
+    imageUrl: 'https://example.com/images/pbj.jpg',
     ingredients: ['bread', 'peanut butter', 'jelly'],
     steps: ['Spread PB', 'Spread jelly', 'Stick together'],
+    dateAdded: new Date(),
+    category: 'Meal',
+    servings: 1,
   },
 ];
 
