@@ -1,5 +1,6 @@
 import { getRecipes } from './lib/recipes';
-import FetchRecipeForm  from '../components/FetchRecipeForm'
+import FetchRecipeForm  from '@/components/FetchRecipeForm'
+import RecipesList from '@/components/RecipesList';
 
 export default function HomePage() {
   const recipes = getRecipes();
@@ -27,6 +28,7 @@ export default function HomePage() {
         ))}
       </ul>
       <FetchRecipeForm />
+      <RecipesList />
     </main>
   );
 }
