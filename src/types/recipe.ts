@@ -5,6 +5,6 @@ export type Recipe = {
   ingredients: string[];
   steps: string[];
   dateAdded: Date;
-  category: 'Meal' | 'Cocktail';
+  category: 'MEAL' | 'COCKTAIL';
   servings?: number;
 };

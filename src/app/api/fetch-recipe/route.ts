@@ -17,10 +17,10 @@ export async function POST(request: Request) {
 
     // Simple way to extract text from HTML (strip tags)
     const text = html.replace(/<script[^>]*>([\s\S]*?)<\/script>/gi, '') // remove scripts
-                     .replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, '')   // remove styles
-                     .replace(/<\/?[^>]+(>|$)/g, ' ')                   // remove HTML tags
-                     .replace(/\s+/g, ' ')                              // collapse whitespace
-                     .trim();
+      .replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, '')   // remove styles
+      .replace(/<\/?[^>]+(>|$)/g, ' ')                   // remove HTML tags
+      .replace(/\s+/g, ' ')                              // collapse whitespace
+      .trim();
 
     return NextResponse.json({ text });
   } catch (error) {
