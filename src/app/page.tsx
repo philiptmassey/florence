@@ -1,4 +1,3 @@
-import FetchRecipeForm  from '@/components/FetchRecipeForm'
 import RecipesList from '@/components/RecipesList';
 
 export default function HomePage() {
