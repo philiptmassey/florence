@@ -8,7 +8,7 @@ export default function FetchRecipeForm() {
     const [loading, setLoading] = useState(false);
     const [summary, setSummary] = useState<string | null>(null);
 
-    async function fetchTextFromUrl() {
+    async function addRecipe() {
         setLoading(true);
         setSummary(null); // reset previous summary
         try {
@@ -74,7 +74,7 @@ export default function FetchRecipeForm() {
                 disabled={loading}
             />
             <button
-                onClick={fetchTextFromUrl}
+                onClick={addRecipe}
                 disabled={loading || !url.trim()}
                 className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-50"
             >
