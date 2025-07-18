@@ -9,17 +9,14 @@ export default function RecipesList() {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   async function fetchRecipes() {
-    setLoading(true);
     const res = await fetch('/api/db/fetch');
     const data: Recipe[] = await res.json();
     setRecipes(data);
-    setLoading(false);
   }
 
-  // Optionally fetch recipes on mount:
+  // Fetch recipes on load.
   useEffect(() => {
     fetchRecipes();
   }, []);
