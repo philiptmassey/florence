@@ -16,7 +16,20 @@ export default function RecipesList() {
     setRecipes(data);
   }
 
-  // Fetch recipes on load.
+  async function handleDelete(id: string) {
+    try {
+      await fetch('/api/db/delete-recipe', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id }),
+      });
+      setSelectedRecipe(null);
+      fetchRecipes(); // Refresh list
+    } catch (error) {
+      console.error('Failed to delete recipe:', error);
+    }
+  }
+
   useEffect(() => {
     fetchRecipes();
   }, []);
@@ -26,7 +39,7 @@ export default function RecipesList() {
       <h2 className="text-2xl font-semibold">Recipes</h2>
 
       <ul className="space-y-2">
-        {/* First element: Add Recipe button styled like recipe */}
+        {/* Add New Recipe button */}
         <li>
           <button
             onClick={() => setShowAddModal(true)}
@@ -36,9 +49,9 @@ export default function RecipesList() {
           </button>
         </li>
 
-        {/* Render actual recipes */}
+        {/* Recipe list */}
         {recipes.map((recipe, i) => (
-          <li key={recipe._id ?? i}>
+          <li key={recipe._id?.toString() ?? i}>
             <button
               onClick={() => setSelectedRecipe(recipe)}
               className="text-left w-full px-4 py-4 bg-white border rounded shadow hover:bg-gray-50"
@@ -49,10 +62,16 @@ export default function RecipesList() {
         ))}
       </ul>
 
+      {/* Recipe Modal */}
       {selectedRecipe && (
-        <RecipeModal recipe={selectedRecipe} onClose={() => setSelectedRecipe(null)} />
+        <RecipeModal
+          recipe={selectedRecipe}
+          onClose={() => setSelectedRecipe(null)}
+          onDelete={(id) => handleDelete(id)}
+        />
       )}
 
+      {/* Add Modal */}
       {showAddModal && (
         <AddRecipeModal
           onClose={() => setShowAddModal(false)}

@@ -22,6 +22,7 @@ export async function POST(request: Request) {
       .replace(/\s+/g, ' ')                              // collapse whitespace
       .trim();
 
+    console.log("extracted text:", text);
     return NextResponse.json({ text });
   } catch (error) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

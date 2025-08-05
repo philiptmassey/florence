@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
+
 export type Recipe = {
-  _id?: string;  // Populated when fetched from MongoDB.
+  _id?: ObjectId;
   title: string;
   imageUrl?: string;
   ingredients: string[];
@@ -7,4 +9,5 @@ export type Recipe = {
   dateAdded: Date;
   category: 'MEAL' | 'COCKTAIL';
   servings?: number;
+  originalUrl: string;
 };

@@ -26,7 +26,7 @@ export default function AddRecipeModal({ onClose, onSuccess }: Props) {
             const recipeData = await fetch('/api/extract-recipe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ recipeText: recipeTextData.text }),
+                body: JSON.stringify({ url: url, websiteText: recipeTextData.text }),
             });
 
             const { recipe } = await recipeData.json();

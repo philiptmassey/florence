@@ -5,7 +5,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-export async function summarizeRecipe(recipeText: string): Promise<Recipe> {
+export async function summarizeRecipe(url: string, websiteText: string): Promise<Recipe> {
     if (!process.env.OPENAI_API_KEY) {
         throw new Error('Missing OPENAI_API_KEY');
     }
@@ -23,7 +23,7 @@ When writing the instructions, be concise but do not leave out any details.
             { role: 'system', content: systemMessage },
             {
                 role: 'user',
-                content: `Extract the structured recipe from the following text: \n\n${recipeText}`,
+                content: `Extract the structured recipe from the following website text: \n\n${websiteText}`,
             },
         ],
         tools: [
@@ -66,6 +66,8 @@ When writing the instructions, be concise but do not leave out any details.
         temperature: 0.3,
     });
 
+    console.log(completion);
+
     const toolCall = completion.choices[0]?.message?.tool_calls?.[0];
     if (!toolCall || !toolCall.function?.arguments) {
         throw new Error('Tool call did not return expected arguments');
@@ -75,6 +77,7 @@ When writing the instructions, be concise but do not leave out any details.
     const recipe: Recipe = {
         ...parsed,
         dateAdded: new Date(),
+        originalUrl: url,
     };
 
     return recipe;
