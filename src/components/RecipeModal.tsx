@@ -26,7 +26,7 @@ export default function RecipeModal({ recipe, onClose, onDelete, onAddToGroceryL
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-lg p-6 w-full max-w-lg relative"
+        className="bg-white rounded-xl shadow-lg p-4 w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
