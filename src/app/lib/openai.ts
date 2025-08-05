@@ -129,11 +129,7 @@ Merge duplicate items together. Use whatever unit makes the most sense.
         temperature: 0,
     });
 
-    console.log(completion);
-
     const toolCall = completion.choices[0]?.message?.tool_calls?.[0];
-    console.log(completion.choices[0].message);
-    console.log(toolCall);
     if (!toolCall || !toolCall.function?.arguments) {
         throw new Error('Tool call did not return expected arguments');
     }

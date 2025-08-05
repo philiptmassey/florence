@@ -1,5 +1,19 @@
 import React from 'react';
 
+/**
+ * TODO: When switching to a DB, use something like
+ * import useSWR from 'swr';
+ * const { data, mutate } = useSWR('/api/grocery-list', fetcher);
+ * const handleCheck = async (id: string) => {
+ * await fetch('/api/check-item', { method: 'POST', body: JSON.stringify({ id }) });
+ * mutate(); // refetch after user interaction
+ * };
+ * 
+ * In order to have this poll in the background.
+ * 
+ * Use refreshWhenHidden: false to have it not refresh in the background!
+ */
+
 type GroceryListProps = {
   groceryList: string[];
   setGroceryList: React.Dispatch<React.SetStateAction<string[]>>;
