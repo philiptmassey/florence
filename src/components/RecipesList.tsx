@@ -5,7 +5,12 @@ import { Recipe } from '@/types/recipe';
 import RecipeModal from '@/components/RecipeModal';
 import AddRecipeModal from '@/components/AddRecipeModal';
 
-export default function RecipesList() {
+type Props = {
+  groceryList: string[];
+  setGroceryList: React.Dispatch<React.SetStateAction<string[]>>;
+};
+
+export default function RecipesList({ groceryList, setGroceryList }: Props) {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -27,6 +32,24 @@ export default function RecipesList() {
       fetchRecipes(); // Refresh list
     } catch (error) {
       console.error('Failed to delete recipe:', error);
+    }
+  }
+
+  async function handleAddToGroceryList(ingredients: string[]) {
+    try {
+      const res = await fetch('/api/add-to-grocery-list', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recipe: { ingredients }, groceryList }),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        setGroceryList(json.updatedGroceryList);
+      } else {
+        console.error('Failed to add to grocery list:', json.error);
+      }
+    } catch (error) {
+      console.error('Failed to add to grocery list:', error);
     }
   }
 
@@ -68,6 +91,10 @@ export default function RecipesList() {
           recipe={selectedRecipe}
           onClose={() => setSelectedRecipe(null)}
           onDelete={(id) => handleDelete(id)}
+          onAddToGroceryList={(ingredients) => {
+            handleAddToGroceryList(ingredients);
+            setSelectedRecipe(null);
+          }}
         />
       )}
 

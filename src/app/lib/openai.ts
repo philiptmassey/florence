@@ -82,3 +82,66 @@ When writing the instructions, be concise but do not leave out any details.
 
     return recipe;
 }
+
+export async function addToGroceryList(recipe: Recipe, groceryList: string[]): Promise<string[]> {
+    if (!process.env.OPENAI_API_KEY) {
+        throw new Error('Missing OPENAI_API_KEY');
+    }
+
+    const systemMessage = `
+You are a recipe list manager.
+Given the current grocery list, add the recipe to the list.
+Merge duplicate items together. Use whatever unit makes the most sense.
+`;
+
+    const userMessageContent = JSON.stringify({
+        currentGroceryList: groceryList,
+        newIngredients: recipe.ingredients,
+    });
+
+    const completion = await openai.chat.completions.create({
+        model: 'gpt-4o-mini',
+        messages: [
+            { role: 'system', content: systemMessage },
+            { role: 'user', content: userMessageContent },
+        ],
+        tools: [
+            {
+                type: 'function',
+                function: {
+                    name: 'updateGroceryList',
+                    description: 'Merge grocery list with new recipe ingredients, unify duplicates, and return the combined list as strings.',
+                    parameters: {
+                        type: 'object',
+                        properties: {
+                            items: {
+                                type: 'array',
+                                description: 'The merged grocery list as an array of ingredient strings',
+                                items: { type: 'string' },
+                            },
+                        },
+                        required: ['items'],
+                    },
+                },
+            },
+        ],
+        tool_choice: { type: 'function', function: { name: 'updateGroceryList' } },
+        temperature: 0,
+    });
+
+    console.log(completion);
+
+    const toolCall = completion.choices[0]?.message?.tool_calls?.[0];
+    console.log(completion.choices[0].message);
+    console.log(toolCall);
+    if (!toolCall || !toolCall.function?.arguments) {
+        throw new Error('Tool call did not return expected arguments');
+    }
+
+    const parsed = JSON.parse(toolCall.function.arguments);
+    if (!parsed.items || !Array.isArray(parsed.items)) {
+        throw new Error('Invalid or missing mergedList in tool call response');
+    }
+
+    return parsed.items;
+}

@@ -6,13 +6,18 @@ type Props = {
   recipe: Recipe;
   onClose: () => void;
   onDelete?: (id: string) => void;
+  onAddToGroceryList: (ingredients: string[]) => void;
 };
 
-export default function RecipeModal({ recipe, onClose, onDelete }: Props) {
+export default function RecipeModal({ recipe, onClose, onDelete, onAddToGroceryList }: Props) {
   const handleDelete = () => {
     if (recipe._id && onDelete) {
       onDelete(recipe._id.toString());
     }
+  };
+
+  const handleAddToGroceryList = () => {
+    onAddToGroceryList(recipe.ingredients);
   };
 
   return (
@@ -86,17 +91,25 @@ export default function RecipeModal({ recipe, onClose, onDelete }: Props) {
           Added: {new Date(recipe.dateAdded).toLocaleDateString()}
         </p>
 
-        {/* Delete button (bottom center) */}
-        {onDelete && recipe._id && (
-          <div className="flex justify-center">
+        {/* Buttons: Add to Grocery List & Delete */}
+        <div className="flex justify-center space-x-4">
+          {
+            <button
+              onClick={handleAddToGroceryList}
+              className="text-green-600 border border-green-300 px-4 py-2 rounded hover:bg-green-50 text-sm font-medium"
+            >
+              Add to Grocery List
+            </button>
+          }
+          {onDelete && recipe._id && (
             <button
               onClick={handleDelete}
               className="text-red-600 border border-red-300 px-4 py-2 rounded hover:bg-red-50 text-sm font-medium"
             >
               Delete Recipe
             </button>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
